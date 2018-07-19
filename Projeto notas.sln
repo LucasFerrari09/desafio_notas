@@ -1,25 +1,131 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeuTest", "..\..\Teste\Teste\MeuTest\MeuTest.csproj", "{68D2778A-98C0-4B74-A7D8-E416B8880407}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{68D2778A-98C0-4B74-A7D8-E416B8880407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68D2778A-98C0-4B74-A7D8-E416B8880407}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68D2778A-98C0-4B74-A7D8-E416B8880407}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68D2778A-98C0-4B74-A7D8-E416B8880407}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7D25E7ED-A8C5-49A9-9695-3006F36CD1C4}
-	EndGlobalSection
-EndGlobal
+using System;
+
+namespace MeuTest
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int n1, n2, n5, n10, n20, n50, n100;// notas
+            int valorsaque; // valor do saque
+            int[] vetnotas = new int[101]; // vetor do algoritmo
+            int totaldisp; // total disponivel no algoritmo
+            int saqueok; // saque 
+            int ntotal; // variavel para um novo total
+            int j; // variavel aux
+            
+            String mensagem; // novas mensagens 
+
+            for (j = 0; j < 101; vetnotas[j++] = 0) ; //zera todas as posições do vetor vetnotas
+
+
+            // a quantidade de notas do repositório do caixa eletrônico é gerada randomicamente
+            // o numero entre () é a quantidade de numero que via gerar randomicamente
+            Random gerador = new Random();
+            vetnotas[1] = gerador.Next(1);
+            vetnotas[2] = gerador.Next(20);
+            vetnotas[5] = gerador.Next(5);
+            vetnotas[10] = gerador.Next(10);
+            vetnotas[20] = gerador.Next(3);
+            vetnotas[50] = gerador.Next(5);
+            vetnotas[100] = gerador.Next(2);
+
+            totaldisp = vetnotas[1] + vetnotas[2] * 2 + vetnotas[5] * 5 + vetnotas[10] * 10
+                + vetnotas[20] * 20 + vetnotas[50] * 50 + vetnotas[100] * 100;
+            //totaldisp é a quantidade de dinheiro disponível no caixa eletrônico 
+
+            mensagem = "Valores iniciais do caixa eletrônico.\n";
+            for (j = 1; j <= 100; j++)
+            {
+                if (vetnotas[j] > 0)
+                    mensagem += "Há " + vetnotas[j] + " notas de R$ " + j + "\n";
+            } // for
+            mensagem += " Total disponível no caixa eletrônico = R$ " + totaldisp;
+
+            Console.WriteLine(mensagem);
+
+            saqueok = 0; //considera que o saque ainda não foi realizado
+            while (saqueok == 0) //saqueok é a validaçao 1=true 0= false
+            {
+
+                //pede o valor do saque que o cliente deseja
+
+                Console.WriteLine("Qual valor do saque ?");
+                valorsaque = (int)Console.Read();
+                
+
+                if (valorsaque > totaldisp)
+                {
+                    // essa linha agora ele vai ler a variavel randomica e sugerir as notas
+                    Console.WriteLine("Nao ha este valor no caixa eletronico," +
+                                                   " digite outro valor ate R$" + totaldisp);
+                    continue;
+                }
+
+                if (valorsaque <= 0)//saqueok é a validaçao 1=true 0= false
+                {
+                    // essa linha agora ele vai ler a variavel randomica e sugerir as notas
+                    Console.WriteLine("Valor inválido. Digite valor válido. ");
+                    continue;
+                }
+
+                //tenta fazer o saque 
+                n100 = valorsaque / 100;
+                if (n100 > 0 && n100 <= vetnotas[100])
+                    valorsaque -= n100 * 100; // conta para deixar o saque positivo com o -
+
+                n50 = valorsaque / 50;
+                if (n50 > 0 && n50 <= vetnotas[50])
+                    valorsaque -= n50 * 50;
+
+                n20 = valorsaque / 20;
+                if (n20 > 0 && n20 <= vetnotas[20])
+                    valorsaque -= n20 * 20;
+
+                n10 = valorsaque / 10;
+                if (n10 > 0 && n10 <= vetnotas[10])
+                    valorsaque -= n10 * 10;
+
+                n5 = valorsaque / 5;
+                if (n5 > 0 && n5 <= vetnotas[5])
+                    valorsaque -= n5 * 5;
+
+                n2 = valorsaque / 2;
+                if (n2 > 0 && n2 <= vetnotas[2])
+                    valorsaque -= n2 * 2;
+
+                n1 = valorsaque;
+                if (n1 > 0 && n1 <= vetnotas[1])
+                    valorsaque -= n1;
+
+               
+
+                if (valorsaque != 0)// aqui ele faz a transformaçao pra 1 sendo assim verdadeiro 
+                {
+                     ntotal = totaldisp - valorsaque ;
+                    Console.WriteLine("Saque realizado com sucesso!!"+ntotal);
+                    saqueok = 1;//saqueok é a validaçao 1=true 0= false
+                }
+                else
+                {
+                    mensagem = ""; //pular linha
+                    mensagem = "Valor não pode ser sacado, não há notas disponíveis para esse total.\nTente outro valor\n";
+                    for (j = 1; j <= 100; j++)
+                    {
+                        if (vetnotas[j] > 0)
+                            mensagem += "Há " + vetnotas[j] + " notas de R$ " + j + "\n";
+                    } // for
+                    Console.WriteLine(mensagem);
+                }
+
+            } 
+            Console.ReadKey();
+
+
+        }
+    }
+
+
+
+}
