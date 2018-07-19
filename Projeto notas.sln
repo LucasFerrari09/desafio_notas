@@ -63,7 +63,7 @@ namespace MeuTest
                     continue;
                 }
 
-                if (valorsaque <= 0)//saqueok é a validaçao 1=true 0= false
+                if (valorsaque <= 0)//validaçao 1=true 0= false
                 {
                     // essa linha agora ele vai ler a variavel randomica e sugerir as notas
                     Console.WriteLine("Valor inválido. Digite valor válido. ");
